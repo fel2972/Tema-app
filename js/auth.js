@@ -1,27 +1,31 @@
-// js/auth.js
+/* =======================================
+   ระบบ Login แบบง่าย—ใช้ localStorage
+======================================= */
 
-(function() {
-    const user = localStorage.getItem("temaUser");
+// ถ้ามีการ login อยู่แล้วให้ส่งไป Dashboard ทันที
+// ถ้าไม่ได้ login → เด้งไป index
+if (!localStorage.getItem("temaUser")) {
+    window.location.href = "index.html";
+}
 
-    // ชื่อไฟล์ปัจจุบัน เช่น "dashboard.html"
-    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+const form = document.getElementById("loginForm");
 
-    const protectedPages = [
-        "dashboard.html",
-        "schedule.html",
-        "tasks.html",
-        "settings.html"
-    ];
+form.addEventListener("submit", function(e){
+    e.preventDefault();
 
-    // ถ้าอยู่ในหน้าที่ต้องล็อกอิน แต่ยังไม่มี user -> เด้งไปหน้า index
-    if (protectedPages.includes(currentPage) && !user) {
-        window.location.href = "index.html";
+    // อ่านค่าจากฟอร์ม
+    const user = document.getElementById("username").value.trim();
+    const pass = document.getElementById("password").value.trim();
+
+    // ตรวจแบบง่าย
+    if (user.length < 3 || pass.length < 3) {
+        alert("กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ถูกต้อง");
         return;
     }
 
-    // (ถ้าอยากให้คนที่ล็อกอินแล้ว เปิด index.html แล้วเด้งไป dashboard ให้เพิ่มส่วนนี้ก็ได้)
-    if ((currentPage === "" || currentPage === "index.html") && user) {
-        // window.location.href = "dashboard.html";
-        // ถ้ายังไม่อยากเด้งอัตโนมัติ สามารถคอมเมนต์บรรทัดนี้ไว้แบบนี้ก่อน
-    }
-})();
+    // บันทึกใน localStorage
+    localStorage.setItem("temaUser", user);
+
+    // ไปหน้า Dashboard
+    window.location.href = "dashboard.html";
+});
