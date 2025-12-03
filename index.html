@@ -43,18 +43,8 @@
     </div>
 
     <!-- สคริปต์ Login + Theme -->
+    <script src="js/auth.js"></script>
     <script src="js/theme.js"></script>
-    <script>
-    // เมื่อกดล็อกอิน -> เซฟชื่อ แล้วไป dashboard
-    document.getElementById("loginForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const name = document.getElementById("loginName").value.trim();
-      if (!name) return;
-      localStorage.setItem("temaUser", name);
-      window.location.href = "dashboard.html";
-    });
-  </script>
-</body>
 
 </body>
 </html>
