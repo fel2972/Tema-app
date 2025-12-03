@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEMA</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ============================
+   Settings page layout
+============================ */
+.settings-page .page-title {
+    margin-bottom: 16px;
+}
+
+.settings-layout {
+    max-width: 900px;
+    margin: 0 auto 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* กล่องตั้งค่าแต่ละอัน */
+.settings-card {
+    background: var(--tema-card-bg, #ffffff);
+    border-radius: 18px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.settings-title {
+    margin: 0 0 6px;
+    font-size: 18px;
+}
+
+.settings-description {
+    margin: 0 0 14px;
+    font-size: 13px;
+    color: #666;
+}
+
+/* แถวข้อมูล */
+.settings-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+
+.settings-row:last-child {
+    border-bottom: none;
+}
+
+.settings-label {
+    font-size: 14px;
+    color: #555;
+}
+
+.settings-value {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* ปุ่มเล็กใน settings */
+.btn-small {
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: none;
+    background: var(--tema-primary, #6a7cff);
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-outline {
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid #ccc;
+    background: transparent;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.btn-danger {
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: none;
+    background: #ff6b81;
+    color: #fff;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.settings-footer-row {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Theme preview สวยขึ้นหน่อย */
+.theme-preview {
+    border-radius: 14px;
+    padding: 12px;
+    background: rgba(167, 199, 255, 0.18);
+    margin-bottom: 14px;
+}
+
+.theme-preview-header {
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.theme-preview-button {
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: none;
+    background: var(--tema-primary, #6a7cff);
+    color: #fff;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.theme-preview-card {
+    background: var(--tema-card-bg, #ffffff);
+    border-radius: 14px;
+    padding: 10px 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.theme-preview-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.theme-preview-card-text {
+    font-size: 12px;
+    color: #666;
+}
+
+/* layout บนหน้าจอใหญ่ให้ 2 คอลัมน์ */
+@media (min-width: 960px) {
+    .settings-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        grid-auto-rows: min-content;
+        gap: 20px;
+    }
+
+    .settings-layout .settings-card:first-child {
+        grid-column: 1 / 3; /* การ์ดธีมกินเต็ม */
+    }
+}
+
+/* Dark mode */
+body.dark .settings-card {
+    background: #262633;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+body.dark .settings-description,
+body.dark .settings-label,
+body.dark .theme-preview-card-text {
+    color: #ccc;
+}
+/* กล่องรวมตัวเลือกสี */
+.theme-form {
+    margin-top: 8px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(167, 199, 255, 0.15);  /* ฟ้าอ่อนพาสเทล */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* แถวแต่ละรายการสี */
+.theme-form-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.theme-form-row label {
+    font-size: 13px;
+    min-width: 190px;
+    color: #444;
+}
+/* กล่องเลือกสี */
+.theme-form-row input[type="color"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 42px;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid #d0d4f0;
+    padding: 0;
+    background: #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+/* ซ่อนขอบ default ของ browser */
+.theme-form-row input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: 8px;
+}
+.theme-form-row input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 8px;
+}
+
+/* กล่องแสดงโค้ดสี #xxxxxx */
+.theme-color-code {
+    font-family: monospace;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #ffffff;
+    color: #555;
+}
+/* แถวปุ่มด้านล่าง */
+.theme-buttons-row {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+/* ปุ่มหลัก (ใช้ของเดิมก็ได้) 
+.btn-submit {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: none;
+    background: var(--tema-primary, #6a7cff);
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+} */
+
+/* ปุ่มรีเซ็ต */
+.btn-reset {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid #d0d0e8;
+    background: #f7f7ff;
+    font-size: 13px;
+    cursor: pointer;
+    color: #444;
+}
+
+.btn-reset:hover {
+    background: #e7e8ff;
+}
+
+/* hover ปุ่มหลักให้ดูตอบสนองนิดนึง */
+.btn-submit:hover {
+    filter: brightness(1.05);
+}
+body.dark .theme-form {
+    background: rgba(80, 90, 150, 0.35);
+}
+
+body.dark .theme-form-row label {
+    color: #ddd;
+}
+
+body.dark .theme-form-row input[type="color"] {
+    background: #1e1f2b;
+    border-color: #555a80;
+}
+
+body.dark .theme-color-code {
+    background: #1f2130;
+    border-color: #555a80;
+    color: #e5e5e5;
+}
+
+body.dark .btn-reset {
+    background: #2b2d3c;
+    border-color: #555a80;
+    color: #e5e5e5;
+}
+
+body.dark .btn-reset:hover {
+    background: #353851;
+}
+
+    </style>
+</head>
+
+<body>
+
+<!-- ปุ่มเมนูสำหรับมือถือ -->
+<button id="menuToggleBtn" class="menu-toggle-btn">
+    <img src="images/menu.png" class="menu-toggle-icon">
+</button>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="sidebar-logo">T</div>
+
+    <nav class="sidebar-menu">
+
+        <a href="dashboard.html" class="menu-item" title="Dashboard">
+            <img src="images/home.png" class="menu-icon">
+        </a>
+
+        <a href="schedule.html" class="menu-item" title="ตารางเรียน">
+            <img src="images/agenda.png" class="menu-icon">
+        </a>
+
+        <a href="tasks.html" class="menu-item" title="งานที่ต้องส่ง">
+            <img src="images/notes.png" class="menu-icon">
+        </a>
+
+        <a href="settings.html" class="menu-item active" title="ตั้งค่า">
+            <img src="images/settings.png" class="menu-icon">
+        </a>
+
+    </nav>
+
+    <!-- ปุ่ม Dark/Light PNG -->
+    <button id="themeToggleBtn" class="theme-btn sidebar-theme-btn">
+        <img id="themeIcon" src="images/sun.png">
+    </button>
+</aside>
+
+
+<!-- เนื้อหา Settings -->
+<main class="main-area settings-page">
+    <h1 class="page-title">การตั้งค่า</h1>
+
+    <div class="settings-layout">
+
+        <!-- การ์ดตั้งค่าธีมสี (ของเดิม) -->
+        <section class="settings-card">
+            <h2 class="settings-title">🎨 ธีมสีของ TEMA</h2>
+            <p class="settings-description">
+                เลือกสีหลักของแอปให้เข้ากับสไตล์ของคุณ สีที่ตั้งไว้จะถูกใช้กับปุ่ม แถบเมนู และการ์ดต่าง ๆ ทั่วทั้งแอป
+            </p>
+
+            <!-- ตัวอย่าง preview -->
+            <div class="theme-preview">
+                <div class="theme-preview-header">ตัวอย่างปุ่มและการ์ด</div>
+                <button class="theme-preview-button">ตัวอย่างปุ่มหลัก</button>
+                <div class="theme-preview-card">
+                    <div class="theme-preview-card-title">การ์ดตัวอย่าง</div>
+                    <div class="theme-preview-card-text">ข้อความตัวอย่างในการ์ด</div>
+                </div>
+            </div>
+
+            <!-- ตัวเลือกสี -->
+            <div class="theme-form">
+
+                <div class="theme-form-row">
+                    <label for="primaryColorInput">สีหลักของแอป (Primary)</label>
+                    <input type="color" id="primaryColorInput">
+                    <span class="theme-color-code" id="primaryColorCode"></span>
+                </div>
+
+                <div class="theme-form-row">
+                    <label for="accentColorInput">สีรอง / ไฮไลต์ (Accent)</label>
+                    <input type="color" id="accentColorInput">
+                    <span class="theme-color-code" id="accentColorCode"></span>
+                </div>
+
+                <div class="theme-form-row">
+                    <label for="cardBgColorInput">พื้นหลังการ์ด (Card background)</label>
+                    <input type="color" id="cardBgColorInput">
+                    <span class="theme-color-code" id="cardBgColorCode"></span>
+                </div>
+
+            </div>
+
+            <div class="theme-buttons-row">
+                <button id="saveThemeBtn" class="btn-submit">บันทึกธีมนี้</button>
+                <button id="resetThemeBtn" class="btn-reset">รีเซ็ตกลับค่าเริ่มต้น</button>
+            </div>
+        </section>
+
+        <!-- การ์ดบัญชีผู้ใช้ -->
+        <section class="settings-card">
+            <h2 class="settings-title">👤 บัญชีผู้ใช้</h2>
+            <p class="settings-description">
+                ข้อมูลผู้ใช้สำหรับแสดงผลในแอป และการจัดการการเข้าสู่ระบบ
+            </p>
+
+            <div class="settings-row">
+                <span class="settings-label">ชื่อที่แสดงในแอป</span>
+                <span class="settings-value" id="displayNameText">-</span>
+                <button id="changeNameBtn" class="btn-small">เปลี่ยนชื่อ</button>
+            </div>
+
+            <div class="settings-row">
+                <span class="settings-label">สถานะการเข้าสู่ระบบ</span>
+                <span class="settings-value" id="loginStatusText">-</span>
+            </div>
+
+            <div class="settings-footer-row">
+                <button id="logoutBtn" class="btn-outline">ออกจากระบบ</button>
+            </div>
+        </section>
+
+        <!-- การ์ดจัดการข้อมูล -->
+        <section class="settings-card">
+            <h2 class="settings-title">🗂 จัดการข้อมูลในแอป</h2>
+            <p class="settings-description">
+                จัดการข้อมูลตารางเรียน งานที่ต้องส่ง และการตั้งค่าธีมของคุณ (ข้อมูลถูกเก็บไว้ในเครื่องของคุณเท่านั้น)
+            </p>
+
+            <div class="settings-row">
+                <span class="settings-label">จำนวนคาบเรียนที่บันทึก</span>
+                <span class="settings-value" id="scheduleCount">0</span>
+                <button id="clearScheduleBtn" class="btn-small">ลบตารางเรียน</button>
+            </div>
+
+            <div class="settings-row">
+                <span class="settings-label">จำนวนนงาน / การบ้านที่บันทึก</span>
+                <span class="settings-value" id="tasksCount">0</span>
+                <button id="clearTasksBtn" class="btn-small">ลบงานทั้งหมด</button>
+            </div>
+
+            <div class="settings-footer-row">
+                <button id="clearAllBtn" class="btn-danger">
+                    ลบข้อมูลทั้งหมดของฉันในแอปนี้
+                </button>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<script src="js/auth.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/themeSettings.js"></script>
+
+<script>
+// JS ปุ่มเมนูซ่อน/โชว์ sidebar บนมือถือ (เหมือนหน้าอื่น)
+const sidebar = document.querySelector(".sidebar");
+const menuBtn = document.getElementById("menuToggleBtn");
+
+menuBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+});
+
+document.addEventListener("click", (e) => {
+    if (window.innerWidth > 900) return;
+    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+        sidebar.classList.remove("open");
+    }
+});
+</script>
+
+</body>
+</html>

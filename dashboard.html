@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEMA</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Sidebar แบบ Compact -->
+ <button id="menuToggleBtn" class="menu-toggle-btn">
+    <img src="images/menu.png" class="menu-toggle-icon">
+</button>
+<aside class="sidebar">
+    <div class="sidebar-logo">T</div>
+
+   <nav class="sidebar-menu">
+
+    <a href="dashboard.html" class="menu-item active" title="Dashboard">
+        <img src="images/home.png" class="menu-icon">
+    </a>
+
+    <a href="schedule.html" class="menu-item" title="ตารางเรียน">
+        <img src="images/agenda.png" class="menu-icon">
+    </a>
+
+    <a href="tasks.html" class="menu-item" title="งานที่ต้องส่ง">
+        <img src="images/notes.png" class="menu-icon">
+    </a>
+
+    <a href="settings.html" class="menu-item" title="ตั้งค่า">
+        <img src="images/settings.png" class="menu-icon">
+    </a>
+
+    </nav>
+
+
+    <!-- ปุ่ม Dark/Light PNG -->
+    <button id="themeToggleBtn" class="theme-btn sidebar-theme-btn">
+        <img id="themeIcon" src="images/sun.png">
+    </button>
+</aside>
+
+
+
+<!-- ส่วนเนื้อหา Dashboard -->
+<main class="dashboard-main">
+    <!-- ตัวอย่างคาบเรียน (แสดงตอนยังไม่มีข้อมูลจริง) -->
+    <div id="exampleBox" class="example-box">
+    <h3 class="example-title">🌟 ตัวอย่างตารางของวันนี้</h3>
+
+    <div class="class-card" style="border-left: 8px solid #A7C7FF; background: #A7C7FF22;">
+        <div class="class-card-title">คณิตเพิ่มเติม</div>
+        <div class="class-card-subinfo">08:30–09:20 | ห้อง 302</div>
+    </div>
+
+    <div class="class-card" style="border-left: 8px solid #F7B5E8; background: #F7B5E822;">
+        <div class="class-card-title">ภาษาอังกฤษ</div>
+        <div class="class-card-subinfo">10:00–10:50 | ห้อง 209</div>
+    </div>
+
+    <p class="example-hint">➕ คุณสามารถเพิ่มคาบเรียนได้ที่หน้า “ตารางเรียน”</p>
+    </div>
+
+    <h1 class="page-title">สรุปวันนี้</h1>
+
+    <!-- พื้นที่แสดงคาบเรียนของวันนี้ -->
+    <div id="todayClasses"></div>
+
+    <p class="empty-note" id="noClassMsg" style="display:none;">
+        วันนี้ไม่มีคาบเรียน
+    </p>
+    <!-- … ของเดิมด้านบน (ตัวอย่าง + สรุปวันนี้ + todayClasses + noClassMsg) ... -->
+
+    <!-- สรุปงานค้างวันนี้ -->
+    <section class="task-summary-section">
+        <div class="task-summary-header">
+            <h2>งานที่ค้างอยู่วันนี้</h2>
+            <a href="tasks.html" class="task-summary-link">ดูทั้งหมด ›</a>
+        </div>
+
+        <!-- การ์ดสรุป 3 ค่า -->
+        <div class="task-summary-cards">
+            <div class="task-summary-card">
+                <div class="task-summary-label">ทั้งหมดวันนี้</div>
+                <div class="task-summary-number" id="tasksTotalToday">0</div>
+            </div>
+            <div class="task-summary-card">
+                <div class="task-summary-label">ทำเสร็จแล้ว</div>
+                <div class="task-summary-number" id="tasksDoneToday">0</div>
+            </div>
+            <div class="task-summary-card">
+                <div class="task-summary-label">ยังไม่เสร็จ</div>
+                <div class="task-summary-number" id="tasksPendingToday">0</div>
+            </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="task-progress">
+            <div class="task-progress-bar">
+                <div class="task-progress-fill" id="taskProgressFill"></div>
+            </div>
+            <div class="task-progress-text" id="taskProgressText">
+                ยังไม่มีงานวันนี้
+            </div>
+        </div>
+
+        <!-- ปุ่มกรองตามวิชา -->
+        <div class="task-filter-row" id="taskSubjectFilters">
+            <!-- จะเติมด้วย JS -->
+        </div>
+
+        <!-- กลุ่มงานตามวิชา -->
+        <div id="taskGroupsContainer"></div>
+
+        <!-- ข้อความกรณีไม่มีงานค้าง -->
+        <p class="empty-note" id="noTasksTodayMsg" style="display:none;">
+            ✅ วันนี้คุณไม่มีงานค้างแล้ว
+        </p>
+    </section>
+
+
+</main>
+
+<script src="js/auth.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/scheduleUtils.js"></script>
+<script src="js/tasksUtils.js"></script>
+
+<script>
+/* ============================
+   สรุปตารางเรียน "วันนี้"
+============================ */
+function loadTodaySchedule() {
+
+    const all = loadSchedule();  // อ่านตารางทั้งหมดจาก localStorage
+    const box = document.getElementById("todayClasses");
+    const noClass = document.getElementById("noClassMsg");
+    const exampleBox = document.getElementById("exampleBox");
+
+    box.innerHTML = ""; // เคลียร์ก่อน
+
+    // หาวันปัจจุบันเป็นภาษาไทย
+    const days = ["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์"];
+    const today = days[new Date().getDay()];
+
+    // หาเฉพาะคาบของวันนี้
+    const todayClasses = all.filter(c => c.day === today);
+
+    // ถ้าวันนี้ไม่มีคาบจริง → แสดง exampleBox
+    if (todayClasses.length === 0) {
+        exampleBox.style.display = "block";
+        noClass.style.display = "none";
+        return;
+    }
+
+    // ถ้ามีคาบจริง → ซ่อน exampleBox
+    exampleBox.style.display = "none";
+    noClass.style.display = "none";
+
+    // เรียงตามเวลา
+    todayClasses.sort((a, b) => a.timeStart.localeCompare(b.timeStart));
+
+    // แสดงคาบเรียนจริง
+    todayClasses.forEach(cls => {
+
+        // อ่านสีประจำวิชา
+        const colors = JSON.parse(localStorage.getItem("subjectColors") || "{}");
+        const color = colors[cls.subject] || "#A7C7FF"; // ถ้าไม่มีใช้ฟ้าพาสเทล
+
+        const card = document.createElement("div");
+        card.className = "class-card";
+        card.style.borderLeft = `8px solid ${color}`;
+        card.style.background = color + "22"; // พาสเทลจาง ๆ
+
+        card.innerHTML = `
+            <div class="class-card-title">${cls.subject}</div>
+            <div class="class-card-subinfo">
+                ${cls.timeStart}–${cls.timeEnd}  
+                ${cls.room ? " | ห้อง " + cls.room : ""}
+            </div>
+        `;
+
+        box.appendChild(card);
+    });
+}
+
+
+/* ============================
+   สรุป "งานที่ค้างอยู่วันนี้"
+============================ */
+
+let currentTaskFilter = "ALL";  // ALL หรือชื่อวิชา
+let tasksTodayCache = [];       // เก็บงานของวันนี้ไว้ใช้ซ้ำ
+
+function loadTasksSummary() {
+    const allTasks = loadTasks();       // จาก tasksUtils.js
+    const todayStr = getTodayISO();     // "YYYY-MM-DD"
+
+    // เฉพาะงานที่มีกำหนดส่งวันนี้
+    const tasksToday = allTasks.filter(t => !t.date || t.date === todayStr);
+    tasksTodayCache = tasksToday;
+
+    const totalToday   = tasksToday.length;
+    const doneToday    = tasksToday.filter(t => t.done).length;
+    const pendingToday = totalToday - doneToday;
+
+    // อัปเดตตัวเลขการ์ดสรุป
+    document.getElementById("tasksTotalToday").textContent   = totalToday;
+    document.getElementById("tasksDoneToday").textContent    = doneToday;
+    document.getElementById("tasksPendingToday").textContent = pendingToday;
+
+    // อัปเดต Progress bar
+    const fill = document.getElementById("taskProgressFill");
+    const text = document.getElementById("taskProgressText");
+
+    if (totalToday === 0) {
+        fill.style.width = "0%";
+        text.textContent = "ยังไม่มีงานที่กำหนดส่งวันนี้";
+    } else {
+        const percent = Math.round((doneToday / totalToday) * 100);
+        fill.style.width = percent + "%";
+
+        if (percent === 0) {
+            text.textContent = "วันนี้ยังไม่ได้เริ่มงานเลย ลองทำสักงานดูนะ ✊";
+        } else if (percent < 100) {
+            text.textContent = `ทำไปแล้ว ${percent}% วันนี้ ใกล้เสร็จแล้ว!`;
+        } else {
+            text.textContent = "ยอดเยี่ยม! งานวันนี้เสร็จหมดแล้ว 🎉";
+        }
+    }
+
+    // อัปเดต filter วิชา + กลุ่มงานค้าง
+    buildTaskSubjectFilters(tasksToday);
+    renderTaskGroups();
+}
+
+/* ----------------------------
+   สร้างปุ่ม filter ตามวิชา
+---------------------------- */
+function buildTaskSubjectFilters(tasksToday) {
+    const container = document.getElementById("taskSubjectFilters");
+    container.innerHTML = "";
+
+    if (!tasksToday || tasksToday.length === 0) {
+        container.style.display = "none";
+        return;
+    }
+    container.style.display = "flex";
+
+    // set วิชา
+    const subjectsSet = new Set();
+    tasksToday.forEach(t => {
+        if (t.subject && t.subject.trim()) {
+            subjectsSet.add(t.subject.trim());
+        }
+    });
+
+    // ปุ่ม "ทั้งหมด"
+    const allChip = createSubjectChip("ทั้งหมด", "ALL");
+    container.appendChild(allChip);
+
+    // ปุ่มตามวิชา
+    Array.from(subjectsSet).sort().forEach(subj => {
+        const chip = createSubjectChip(subj, subj);
+        container.appendChild(chip);
+    });
+
+    // ตั้งค่าเริ่มต้น
+    setActiveSubjectChip(currentTaskFilter);
+}
+
+function createSubjectChip(label, value) {
+    const chip = document.createElement("button");
+    chip.className = "task-filter-chip";
+    chip.textContent = label;
+    chip.dataset.value = value;
+
+    chip.addEventListener("click", () => {
+        currentTaskFilter = value;
+        setActiveSubjectChip(value);
+        renderTaskGroups();
+    });
+
+    return chip;
+}
+
+function setActiveSubjectChip(value) {
+    const chips = document.querySelectorAll(".task-filter-chip");
+    chips.forEach(ch => {
+        if (ch.dataset.value === value) ch.classList.add("active");
+        else ch.classList.remove("active");
+    });
+}
+
+/* ----------------------------
+   แสดงกลุ่มงานตามวิชา
+---------------------------- */
+function renderTaskGroups() {
+    const container = document.getElementById("taskGroupsContainer");
+    const noTasksMsg = document.getElementById("noTasksTodayMsg");
+
+    container.innerHTML = "";
+
+    if (!tasksTodayCache || tasksTodayCache.length === 0) {
+        noTasksMsg.style.display = "block";
+        return;
+    }
+
+    // งานที่ยังไม่เสร็จวันนี้
+    let pending = tasksTodayCache.filter(t => !t.done);
+
+    // ถ้ามี filter วิชา
+    if (currentTaskFilter !== "ALL") {
+        pending = pending.filter(t => (t.subject || "").trim() === currentTaskFilter);
+    }
+
+    if (pending.length === 0) {
+        noTasksMsg.style.display = "block";
+        return;
+    } else {
+        noTasksMsg.style.display = "none";
+    }
+
+    // จัดกลุ่มตามวิชา
+    const groups = {};
+    pending.forEach(t => {
+        const key = t.subject && t.subject.trim()
+            ? t.subject.trim()
+            : "อื่น ๆ / ไม่ระบุวิชา";
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(t);
+    });
+
+    const today = new Date();
+    const nowTime = today.toTimeString().slice(0,5); // "HH:MM"
+
+    Object.keys(groups).sort().forEach(subject => {
+        const tasks = groups[subject];
+
+        // เรียงตามเวลา
+        tasks.sort((a,b) => {
+            const at = a.time || "";
+            const bt = b.time || "";
+            return at.localeCompare(bt);
+        });
+
+        // กล่องหนึ่งวิชา
+        const groupBox = document.createElement("div");
+        groupBox.className = "task-group-box";
+
+        const header = document.createElement("div");
+        header.className = "task-group-header";
+        header.innerHTML = `
+            <div class="task-group-title">${subject}</div>
+            <div class="task-group-count">${tasks.length} งานค้าง</div>
+        `;
+
+        const list = document.createElement("div");
+        list.className = "task-group-list";
+
+        tasks.forEach(task => {
+            // ตรวจ flag เลยเวลา (ถ้ามี time)
+            let statusTag = "วันนี้";
+            let statusClass = "tag-today";
+
+            if (task.time) {
+                const dueTime = task.time;
+                if (dueTime < nowTime) {
+                    statusTag = "เลยกำหนด";
+                    statusClass = "tag-overdue";
+                }
+            }
+
+            const item = document.createElement("div");
+            item.className = "task-group-item";
+            item.innerHTML = `
+                <div class="task-item-left">
+                    <div class="task-checkbox-fake"></div>
+                </div>
+                <div class="task-item-main">
+                    <div class="task-item-title">${task.title}</div>
+                    <div class="task-item-meta">
+                        ส่งวันนี้${task.time ? " เวลา " + task.time : ""} 
+                        ${task.note ? " • " + task.note : ""}
+                    </div>
+                </div>
+                <div class="task-item-right">
+                    <span class="task-status-tag ${statusClass}">${statusTag}</span>
+                </div>
+            `;
+            list.appendChild(item);
+        });
+
+        groupBox.appendChild(header);
+        groupBox.appendChild(list);
+        container.appendChild(groupBox);
+    });
+}
+
+/* ----------------------------
+   Helper: วันที่วันนี้ "YYYY-MM-DD"
+---------------------------- */
+function getTodayISO() {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2,"0");
+    const day = String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${day}`;
+}
+
+/* ============================
+   เรียกใช้เมื่อโหลดหน้าเสร็จ
+============================ */
+document.addEventListener("DOMContentLoaded", () => {
+    loadTodaySchedule();
+    loadTasksSummary();
+});
+</script>
+
+</body>
+</html>

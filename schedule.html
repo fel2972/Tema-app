@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>TEMA</title>
+
+    <link rel="stylesheet" href="css/styles.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- 🔵 Sidebar แบบ PNG -->
+<button id="menuToggleBtn" class="menu-toggle-btn">
+    <img src="images/menu.png" class="menu-toggle-icon">
+</button>
+<aside class="sidebar">
+    <div class="sidebar-logo">T</div>
+
+   <nav class="sidebar-menu">
+
+    <a href="dashboard.html" class="menu-item " title="Dashboard">
+        <img src="images/home.png" class="menu-icon">
+    </a>
+
+    <a href="schedule.html" class="menu-item active" title="ตารางเรียน">
+        <img src="images/agenda.png" class="menu-icon">
+    </a>
+
+    <a href="tasks.html" class="menu-item" title="งานที่ต้องส่ง">
+        <img src="images/notes.png" class="menu-icon">
+    </a>
+
+    <a href="settings.html" class="menu-item" title="ตั้งค่า">
+        <img src="images/settings.png" class="menu-icon">
+    </a>
+
+    </nav>
+
+
+    <!-- ปุ่ม Dark/Light PNG -->
+    <button id="themeToggleBtn" class="theme-btn sidebar-theme-btn">
+        <img id="themeIcon" src="images/sun.png">
+    </button>
+</aside>
+
+<!-- 🔵 MAIN -->
+<main class="main-area">
+
+    <h1 class="page-title">ตารางเรียน</h1>
+
+    <!-- ฟอร์มเพิ่มคาบเรียน -->
+    <form id="addClassForm" class="class-form">
+
+        <div class="form-row">
+            <label>วัน</label>
+            <select id="day" required>
+                <option value="">เลือกวัน</option>
+                <option>จันทร์</option>
+                <option>อังคาร</option>
+                <option>พุธ</option>
+                <option>พฤหัสบดี</option>
+                <option>ศุกร์</option>
+                <option>เสาร์</option>
+                <option>อาทิตย์</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <label>วิชา</label>
+            <input type="text" id="subject" placeholder="เช่น คณิตเพิ่มเติม" required/>
+        </div>
+
+        <div class="form-row small">
+            <div>
+                <label>เวลาเริ่ม</label>
+                <input type="time" id="timeStart" required>
+            </div>
+            <div>
+                <label>เวลาจบ</label>
+                <input type="time" id="timeEnd" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label>ห้องเรียน (ไม่บังคับ)</label>
+            <input type="text" id="room" placeholder="เช่น 302 / Lab 1">
+        </div>
+
+        <div class="form-row">
+            <label>สีของวิชา</label>
+            <!-- ปุ่มเปิด Color Picker -->
+            <button type="button" id="openPickerBtn" class="color-btn">เลือกสี</button>
+            <div id="previewColor" class="preview-color"></div>
+        </div>
+
+        <button class="btn-submit" type="submit">เพิ่มคาบเรียน</button>
+    </form>
+
+    <!-- 🔵 แสดงคาบเรียนทั้งหมด -->
+    <div id="classList"></div>
+</main>
+
+
+<!-- 🔵 POPUP COLOR PICKER (A3) -->
+<div id="colorPickerModal" class="color-modal">
+    <div class="color-modal-content">
+
+        <h2 class="color-title">เลือกสีวิชา</h2>
+
+        <!-- Hue Wheel -->
+        <canvas id="hueWheel" width="260" height="260"></canvas>
+
+        <!-- SB Square -->
+        <canvas id="sbSquare" width="240" height="240"></canvas>
+
+        <!-- Preview -->
+        <div class="color-preview" id="colorPreviewBox"></div>
+
+        <!-- HEX Input -->
+        <label>รหัสสี (HEX):</label>
+        <input type="text" id="hexInput" maxlength="7" placeholder="#AABBCC"/>
+
+        <!-- ปุ่มบันทึก -->
+        <button id="saveColorBtn" class="color-save-btn">บันทึกสีนี้</button>
+        <button id="closePickerBtn" class="color-cancel-btn">ปิด</button>
+
+    </div>
+</div>
+
+<script src="js/theme.js"></script>
+<script src="js/colorPicker.js"></script>
+<script src="js/schedule.js"></script>
+<script src="js/menu.js"></script>
+
+</body>
+</html>

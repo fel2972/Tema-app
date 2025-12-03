@@ -1,0 +1,951 @@
+/* ============================
+   ฟอนต์หลักทั้งระบบ
+============================ */
+:root {
+    --tema-primary:   #6a7cff;  /* สีหลัก */
+    --tema-accent:    #A7C7FF;  /* สีรอง */
+    --tema-card-bg:   #ffffff;  /* พื้นหลังการ์ด */
+}
+
+/* ถ้าอยากให้ dark mode เปลี่ยนพื้นหลังการ์ดก็ได้ */
+body.dark {
+    --tema-card-bg: #252530;
+}
+
+body {
+    font-family: "Prompt", sans-serif;
+    margin: 0;
+    background: #f5f7fc; /* ขาวพาสเทลนุ่มมาก */
+    color: #1d1d1d;
+}
+
+/* ============================
+   ตัวเลือก Dark/Light/Auto
+============================ */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.theme-toggle select {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid #d0d0d0;
+    background: #ffffffaa;
+}
+
+/* ============================
+   กล่องกลางหน้า (Login Container)
+============================ */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* โลโก้ TEMA */
+.login-logo {
+    font-size: 42px;
+    font-weight: 600;
+    color: #6a7cff; /* ฟ้าพาสเทล */
+    margin-bottom: 20px;
+}
+
+/* กล่อง Login */
+.login-card {
+    width: 90%;
+    max-width: 380px;
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.login-title {
+    font-size: 22px;
+    margin: 0 0 10px;
+}
+
+/* ช่องกรอก */
+.login-card input {
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #d7d7d7;
+    background: #fafcff;
+    font-size: 15px;
+}
+
+/* ปุ่ม Login */
+.btn-login {
+    margin-top: 10px;
+    padding: 12px;
+    background: #6a7cff;
+    color: white;
+    font-size: 16px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-login:hover {
+    background: #5567ff;
+}
+
+.login-note {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 6px;
+    color: #777;
+}
+
+/* ============================
+   Dark Mode
+============================ */
+
+body.dark {
+    background: #1d1d25;
+    color: #f2f2f2;
+}
+
+body.dark .login-card {
+    background: #292933;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+body.dark input {
+    background: #31313d;
+    border-color: #444;
+    color: white;
+}
+
+body.dark .btn-login {
+    background: #8f9bff;
+}
+
+body.dark .login-logo {
+    color: #9aa4ff;
+}
+/* ปุ่มสลับโหมด (ใช้ PNG icon) */
+.theme-btn {
+    background: #ffffffdd;
+    padding: 8px;
+    border-radius: 12px;
+    border: 1px solid #dcdcdc;
+    cursor: pointer;
+    transition: 0.2s;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-btn:hover {
+    background: #eef0ff;
+}
+
+/* ขนาดไอคอน PNG */
+.theme-btn img {
+    width: 26px;
+    height: 26px;
+}
+
+body.dark .theme-btn {
+    background: #333;
+    border-color: #575757;
+}
+
+body.dark .theme-btn:hover {
+    background: #444;
+}
+/* ============================
+   Sidebar แบบ Compact
+============================ */
+.sidebar {
+    width: 80px;
+    background: #ffffff;
+    border-right: 1px solid #e5e5e5;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar-logo {
+    font-size: 32px;
+    font-weight: 700;
+    color: #6a7cff;
+    margin-bottom: 30px;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.menu-item {
+    font-size: 24px;
+    padding: 10px;
+    border-radius: 12px;
+    color: #555;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.menu-item:hover {
+    background: #eef2ff;
+}
+
+.menu-item.active {
+    background: var(--tema-primary);
+    color: white;
+}
+
+/* ปุ่ม Dark/Light PNG ใน sidebar */
+.sidebar-theme-btn {
+    margin-top: auto;
+    margin-bottom: 30px;
+}
+
+/* ============================
+   Main Content ของ Dashboard
+============================ */
+.dashboard-main {
+    margin-left: 90px; /* เผื่อที่ sidebar */
+    padding: 30px;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+/* ============================
+   การ์ดคาบเรียนแบบ A
+============================ */
+.class-card {
+    padding: 18px 22px;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    margin-bottom: 18px;
+}
+
+.class-card-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.class-card-subinfo {
+    font-size: 14px;
+    color: #555;
+}
+
+.empty-note {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #777;
+}
+
+/* Dark mode */
+body.dark .class-card {
+    background: #2c2c35;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+body.dark .class-card-title {
+    color: #fff;
+}
+
+body.dark .class-card-subinfo {
+    color: #ccc;
+}
+
+body.dark .page-title {
+    color: #fff;
+}
+
+body.dark .empty-note {
+    color: #aaa;
+}
+
+body.dark .sidebar {
+    background: #1e1e25;
+    border-color: #333;
+}
+
+body.dark .menu-item {
+    color: #bbb;
+}
+
+body.dark .menu-item:hover {
+    background: #333a;
+}
+
+body.dark .menu-item.active {
+    background: #8f9bff;
+    color: #fff;
+}
+/* ไอคอน PNG ในเมนู Sidebar */
+.menu-icon {
+    width: 26px;
+    height: 26px;
+    opacity: 0.85;
+    transition: 0.2s;
+}
+
+.menu-item:hover .menu-icon {
+    opacity: 1;
+}
+
+.menu-item.active .menu-icon {
+    opacity: 1;
+    filter: drop-shadow(0 0 4px #6a7cff); /* ไลต์พาสเทล */
+}
+
+/* Dark mode */
+body.dark .menu-icon {
+    opacity: 0.9;
+}
+body.dark .menu-item.active .menu-icon {
+    filter: drop-shadow(0 0 4px #9aa4ff);
+}
+/* ============================
+   Layout หน้า Schedule
+============================ */
+.main-area {
+    margin-left: 90px; /* ที่ว่างสำหรับ sidebar */
+    padding: 24px;
+}
+
+/* ฟอร์มเพิ่มคาบ */
+.class-form {
+    background: var(--tema-card-bg);
+    padding: 18px 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.class-form .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.class-form .form-row.small {
+    flex-direction: row;
+    gap: 12px;
+}
+
+.class-form label {
+    font-size: 14px;
+    color: #555;
+}
+
+.class-form input,
+.class-form select {
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid #d4d4d4;
+    background: #f8f9ff;
+    font-size: 14px;
+}
+
+.btn-submit {
+    margin-top: 6px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: none;
+    background: var(--tema-primary);
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+/* ปุ่มเลือกสี */
+.color-btn {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid #d4d4d4;
+    background: #f5f5ff;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/* preview สี */
+.preview-color {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* การ์ดคาบในหน้า Schedule (แบบ A + มีชื่อวัน) */
+.class-card-day {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 2px;
+}
+
+.class-card-delete {
+    margin-top: 10px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    border: none;
+    background: #ff6b81;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+/* ============================
+   Color Picker Modal
+============================ */
+.color-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.color-modal.open {
+    display: flex;
+}
+
+.color-modal-content {
+    background: #ffffff;
+    border-radius: 16px; /* ตามที่เลือก Style B */
+    box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+    padding: 18px;
+    width: 90%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.color-title {
+    margin: 0 0 6px;
+    font-size: 18px;
+}
+
+#hueWheel, #sbSquare {
+    margin: 6px 0;
+}
+
+/* กล่อง preview สี */
+.color-preview {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    margin: 8px 0;
+}
+
+#hexInput {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+/* ปุ่มในโมดัล */
+.color-save-btn,
+.color-cancel-btn {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    margin-top: 6px;
+    font-size: 14px;
+}
+
+.color-save-btn {
+    background: #6a7cff;
+    color: white;
+}
+
+.color-cancel-btn {
+    background: #e5e5e5;
+}
+
+/* Dark Mode Modal */
+body.dark .color-modal-content {
+    background: #252530;
+    color: #eee;
+}
+
+body.dark #hexInput {
+    background: #333545;
+    border-color: #555;
+    color: #f5f5f5;
+}
+/* กล่องตัวอย่างใน Dashboard */
+.example-box {
+    background: #ffffff;
+    padding: 18px 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+}
+
+.example-title {
+    margin: 0 0 12px;
+    font-size: 18px;
+    color: #4b4b4b;
+}
+
+.example-hint {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #777;
+}
+
+/* Dark mode */
+body.dark .example-box {
+    background: #2a2a33;
+}
+
+body.dark .example-title {
+    color: #eee;
+}
+
+body.dark .example-hint {
+    color: #aaa;
+}
+/* ============================
+   หน้า Tasks
+============================ */
+
+/* ใช้ layout เดียวกับ .main-area ที่มีอยู่แล้ว */
+
+/* ฟอร์มเพิ่มงาน */
+.task-form {
+    background: #ffffff;
+    padding: 18px 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.task-form .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.task-form .form-row.small {
+    flex-direction: row;
+    gap: 12px;
+}
+
+.task-form label {
+    font-size: 14px;
+    color: #555;
+}
+
+.task-form input,
+.task-form textarea {
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid #d4d4d4;
+    background: #f8f9ff;
+    font-size: 14px;
+    resize: vertical;
+}
+
+/* การ์ดงาน */
+.task-card {
+    padding: 14px 16px;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    margin-bottom: 14px;
+    background: var(--tema-card-bg);
+    }
+
+.task-main-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.task-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.task-subject {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.task-date {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+.task-note {
+    font-size: 13px;
+    color: #777;
+}
+
+/* ปุ่ม actions */
+.task-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+}
+
+.task-toggle-btn,
+.task-delete-btn {
+    padding: 6px 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.task-toggle-btn {
+    background: #6a7cff;
+    color: #fff;
+}
+
+.task-delete-btn {
+    background: #ff6b81;
+    color: #fff;
+}
+
+/* งานที่เสร็จแล้ว */
+.task-card.done {
+    opacity: 0.7;
+    background: #f1f3ff;
+}
+
+.task-card.done .task-title {
+    text-decoration: line-through;
+}
+
+/* รองรับหน้าจอเล็ก */
+@media (max-width: 768px) {
+    .task-main-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .task-actions {
+        flex-direction: row;
+    }
+}
+
+/* Dark mode สำหรับ task card */
+body.dark .task-card {
+    background: #2a2a33;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+body.dark .task-title {
+    color: #fff;
+}
+
+body.dark .task-subject,
+body.dark .task-date,
+body.dark .task-note {
+    color: #ccc;
+}
+
+body.dark .task-card.done {
+    background: #33364a;
+}
+/* ปุ่ม Hamburger */
+.menu-toggle-btn {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 200;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.menu-toggle-icon {
+    width: 32px;
+    height: 32px;
+}
+
+/* ปรับ Sidebar เริ่มปิดบนมือถือ */
+/* ===== Mobile / Tablet Sidebar (เลื่อนเข้าออก แต่ขนาดเท่า Desktop) ===== */
+@media (max-width: 900px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -80px;        /* ซ่อนออกไปเท่าความกว้าง sidebar */
+        width: 80px;        /* เท่ากับตอน Desktop */
+        height: 100vh;
+        transition: left 0.25s ease;
+        z-index: 300;
+        box-shadow: 4px 0 18px rgba(0,0,0,0.08); /* ให้มีเงานิดๆ เวลาเลื่อนออกมา */
+    }
+
+    .sidebar.open {
+        left: 0;            /* เลื่อนกลับเข้ามา */
+    }
+
+    /* ปุ่ม hamburger แสดงเฉพาะหน้าจอเล็ก */
+    .menu-toggle-btn {
+        display: block;
+    }
+
+    /* พื้นที่เนื้อหาไม่ต้องเผื่อ margin-left แล้ว */
+    .main-area,
+    .dashboard-main {
+        margin-left: 0;
+        padding-top: 64px;  /* เผื่อที่ด้านบนให้ปุ่มเมนู */
+    }
+}
+/* ============================
+   สรุปงานค้างวันนี้ใน Dashboard
+============================ */
+.task-summary-section {
+    margin-top: 32px;
+    background: #ffffff;
+    padding: 18px 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.task-summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.task-summary-header h2 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.task-summary-link {
+    font-size: 14px;
+    text-decoration: none;
+    color: #6a7cff;
+}
+
+/* การ์ด 3 ใบ */
+.task-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.task-summary-card {
+    background: color-mix(in srgb, var(--tema-primary) 10%, #ffffff 90%);
+    border-radius: 12px;
+    padding: 10px 12px;
+}
+
+.task-summary-label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.task-summary-number {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Progress bar */
+.task-progress {
+    margin-bottom: 12px;
+}
+
+.task-progress-bar {
+    width: 100%;
+    height: 10px;
+    border-radius: 999px;
+    background: #e3e6f5;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.task-progress-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #6a7cff, #c7a7ff);
+    transition: width 0.25s ease;
+}
+
+.task-progress-text {
+    font-size: 13px;
+    color: #555;
+}
+
+/* Filter chips */
+.task-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.task-filter-chip {
+    border-radius: 999px;
+    border: 1px solid #d4d4f0;
+    background: #f7f7ff;
+    font-size: 13px;
+    padding: 4px 10px;
+    cursor: pointer;
+}
+
+.task-filter-chip.active {
+    background: #6a7cff;
+    color: #fff;
+    border-color: #6a7cff;
+}
+
+/* กล่องกลุ่มวิชา */
+.task-group-box {
+    margin-bottom: 14px;
+    border-radius: 14px;
+    background: #f8f9ff;
+    padding: 10px 12px;
+}
+
+.task-group-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.task-group-title {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.task-group-count {
+    font-size: 12px;
+    color: #666;
+}
+
+.task-group-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.task-group-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.task-item-left .task-checkbox-fake {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #6a7cff;
+    background: #fff;
+}
+
+.task-item-main {
+    flex: 1;
+}
+
+.task-item-title {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.task-item-meta {
+    font-size: 12px;
+    color: #666;
+}
+
+.task-item-right {
+    margin-left: 4px;
+}
+
+/* แท็กสถานะ */
+.task-status-tag {
+    font-size: 11px;
+    border-radius: 999px;
+    padding: 2px 8px;
+}
+
+.tag-today {
+    background: #e0f3ff;
+    color: #2467b2;
+}
+
+.tag-overdue {
+    background: #ffe0e5;
+    color: #b2243a;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .task-summary-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dark mode */
+body.dark .task-summary-section {
+    background: #262633;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+body.dark .task-summary-card {
+    background: #2f3040;
+}
+
+body.dark .task-progress-bar {
+    background: #3a3b4e;
+}
+
+body.dark .task-progress-text,
+body.dark .task-summary-label,
+body.dark .task-group-count,
+body.dark .task-item-meta {
+    color: #ccc;
+}
+
+body.dark .task-group-box {
+    background: #2e3042;
+}
+

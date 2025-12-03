@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEMA – Login</title>
+
+    <!-- CSS หลักของระบบ -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- ฟอนต์ไทยสวย ๆ -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="theme-auto">
+
+    <!-- ปุ่มสลับโหมดสี -->
+    <div class="theme-toggle">
+    <button id="themeToggleBtn" class="theme-btn">
+        <img id="themeIcon" src="images/sun.png" alt="theme icon" />
+    </button>
+    </div>
+
+    <div class="login-container">
+
+        <!-- โลโก้ -->
+        <h1 class="login-logo">TEMA</h1>
+
+        <!-- ฟอร์มล็อกอิน -->
+        <form id="loginForm" class="login-card">
+
+            <h2 class="login-title">เข้าสู่ระบบ</h2>
+
+            <label>ชื่อผู้ใช้</label>
+            <input type="text" id="username" required placeholder="กรอกชื่อผู้ใช้">
+
+            <label>รหัสผ่าน</label>
+            <input type="password" id="password" required placeholder="กรอกรหัสผ่าน">
+
+            <button type="submit" class="btn-login">เข้าสู่ระบบ</button>
+
+            <p class="login-note">ระบบนี้ใช้การบันทึกข้อมูลในเครื่อง (localStorage)</p>
+        </form>
+    </div>
+
+    <!-- สคริปต์ Login + Theme -->
+    <script src="js/auth.js"></script>
+    <script src="js/theme.js"></script>
+
+</body>
+</html>

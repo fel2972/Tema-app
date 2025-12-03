@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEMA</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<button id="menuToggleBtn" class="menu-toggle-btn">
+    <img src="images/menu.png" class="menu-toggle-icon">
+</button>
+<!-- Sidebar แบบ Compact -->
+<aside class="sidebar">
+    <div class="sidebar-logo">T</div>
+
+    <nav class="sidebar-menu">
+
+        <a href="dashboard.html" class="menu-item" title="Dashboard">
+            <img src="images/home.png" class="menu-icon">
+        </a>
+
+        <a href="schedule.html" class="menu-item" title="ตารางเรียน">
+            <img src="images/agenda.png" class="menu-icon">
+        </a>
+
+        <a href="tasks.html" class="menu-item active" title="งานที่ต้องส่ง">
+            <img src="images/notes.png" class="menu-icon">
+        </a>
+
+        <a href="settings.html" class="menu-item" title="ตั้งค่า">
+            <img src="images/settings.png" class="menu-icon">
+        </a>
+
+    </nav>
+
+    <!-- ปุ่ม Dark/Light PNG -->
+    <button id="themeToggleBtn" class="theme-btn sidebar-theme-btn">
+        <img id="themeIcon" src="images/sun.png">
+    </button>
+</aside>
+
+
+<!-- ส่วนเนื้อหา Tasks -->
+<main class="main-area">
+
+    <h1 class="page-title">งานและการบ้าน</h1>
+
+    <!-- ฟอร์มเพิ่มงาน -->
+    <form id="taskForm" class="task-form">
+
+        <div class="form-row">
+            <label>ชื่องาน / การบ้าน *</label>
+            <input type="text" id="taskTitle" required placeholder="เช่น การบ้านคณิตหน้า 23 ข้อ 1–10">
+        </div>
+
+        <div class="form-row">
+            <label>วิชา (ไม่จำเป็น)</label>
+            <input type="text" id="taskSubject" placeholder="เช่น คณิต / ฟิสิกส์ / อังกฤษ">
+        </div>
+
+        <div class="form-row small">
+            <div>
+                <label>วันที่ส่ง</label>
+                <input type="date" id="taskDate">
+            </div>
+            <div>
+                <label>เวลา (ถ้ามี)</label>
+                <input type="time" id="taskTime">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label>หมายเหตุ (ไม่จำเป็น)</label>
+            <textarea id="taskNote" rows="2" placeholder="เช่น ส่งใน Google Classroom / ต้องปริ้นท์ไปด้วย"></textarea>
+        </div>
+
+        <button class="btn-submit" type="submit">เพิ่มงาน</button>
+    </form>
+
+    <!-- รายการงานทั้งหมด -->
+    <div id="taskList"></div>
+
+</main>
+
+<script src="js/auth.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/tasks.js"></script>
+<script src="js/menu.js"></script>
+
+</body>
+</html>
