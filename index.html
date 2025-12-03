@@ -1,50 +1,36 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEMA – Login</title>
-
-    <!-- CSS หลักของระบบ -->
-    <link rel="stylesheet" href="css/styles.css">
-
-    <!-- ฟอนต์ไทยสวย ๆ -->
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TEMA – Login</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
-<body class="theme-auto">
+<body>
 
-    <!-- ปุ่มสลับโหมดสี -->
-    <div class="theme-toggle">
-    <button id="themeToggleBtn" class="theme-btn">
-        <img id="themeIcon" src="images/sun.png" alt="theme icon" />
-    </button>
-    </div>
+  <!-- ฟอร์มล็อกอินง่าย ๆ -->
+  <main class="login-main">
+    <h1 class="page-title">เข้าสู่ระบบ TEMA</h1>
 
-    <div class="login-container">
+    <form id="loginForm" class="login-form">
+      <label>ชื่อของคุณ</label>
+      <input type="text" id="loginName" required placeholder="เช่น Tema หรือชื่อเล่นของคุณ">
+      <button type="submit" class="btn-submit">เข้าสู่แอป</button>
+    </form>
+  </main>
 
-        <!-- โลโก้ -->
-        <h1 class="login-logo">TEMA</h1>
-
-        <!-- ฟอร์มล็อกอิน -->
-        <form id="loginForm" class="login-card">
-
-            <h2 class="login-title">เข้าสู่ระบบ</h2>
-
-            <label>ชื่อผู้ใช้</label>
-            <input type="text" id="username" required placeholder="กรอกชื่อผู้ใช้">
-
-            <label>รหัสผ่าน</label>
-            <input type="password" id="password" required placeholder="กรอกรหัสผ่าน">
-
-            <button type="submit" class="btn-login">เข้าสู่ระบบ</button>
-
-            <p class="login-note">ระบบนี้ใช้การบันทึกข้อมูลในเครื่อง (localStorage)</p>
-        </form>
-    </div>
-
-    <!-- สคริปต์ Login + Theme -->
-    <script src="js/auth.js"></script>
-    <script src="js/theme.js"></script>
-
+  <!-- ❌ ห้ามใส่ auth.js ที่นี่ -->
+  <script src="js/theme.js"></script>
+  <script>
+    // เมื่อกดล็อกอิน -> เซฟชื่อ แล้วไป dashboard
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("loginName").value.trim();
+      if (!name) return;
+      localStorage.setItem("temaUser", name);
+      window.location.href = "dashboard.html";
+    });
+  </script>
 </body>
 </html>
